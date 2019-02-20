@@ -14,24 +14,65 @@ class LinkedList {
     if (!this.head) {
       this.head = newNode;
       this.tail = newNode;
-      return this;
+      return ;
     }
 
     // Attach new node to the end of linked list.
     this.tail.next = newNode;
     this.tail = newNode;
+    return ;
+  }
+
+   prepend(value) {
+    // Make new node to be a head.
+    const newNode = new LinkedListNode(value, this.head);
+    this.head = newNode;
+
+    // If there is no tail yet let's make new node a tail.
+    if (!this.tail) {
+      this.tail = newNode;
+    }
+
     return this;
+  }
+
+
+   delete(value) {
+    if (!this.head) {
+      return null;
+    }
+
+    let deletedNode = null;
+
+    // If the head must be deleted then make next node that is differ
+    // from the head to be a new head.
+    while (this.head && this.compare.equal(this.head.value, value)) {
+      deletedNode = this.head;
+      this.head = this.head.next;
+    }
+
+    let currentNode = this.head;
+
+    if (currentNode !== null) {
+      // If next node must be deleted then make next node to be a next next one.
+      while (currentNode.next) {
+        if (this.compare.equal(currentNode.next.value, value)) {
+          deletedNode = currentNode.next;
+          currentNode.next = currentNode.next.next;
+        } else {
+          currentNode = currentNode.next;
+        }
+      }
+    }
+
+    // Check if tail must be deleted.
+    if (this.compare.equal(this.tail.value, value)) {
+      this.tail = currentNode;
+    }
+
+    return deletedNode;
   }
 }
 
-let linkedList = new LinkedList();
- linkedList.append(1);
-  console.log('1',linkedList);
- linkedList.append(2);
-  console.log('2',linkedList);
- linkedList.append(3);
-  console.log('3',linkedList);
- linkedList.append(4);
-  console.log('4',linkedList);
- linkedList.append(5); 
- console.log('5',linkedList);
+
+module.exports = LinkedList;
